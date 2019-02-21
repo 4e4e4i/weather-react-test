@@ -1,11 +1,14 @@
 import React from 'react';
 import CitiesListContainer from "../cities-list/cities-list";
+import CityForm from "../citi-form";
 
 const HomePage = () => {
     return (
-        <div>
+        <section className="current-weather">
+            <h1>React Weather</h1>
+            <CityForm/>
             <CitiesListContainer/>
-        </div>
+        </section>
     )
 };
 

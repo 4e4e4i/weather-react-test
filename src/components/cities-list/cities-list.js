@@ -8,6 +8,8 @@ import {withWeatherService} from "../hoc";
 import compose from '../utils'
 import { connect } from 'react-redux';
 
+import './cities-list.scss';
+
 const CitiesList = ({ cities }) => {
     return (
         <ul className="cities-list">

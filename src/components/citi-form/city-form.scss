@@ -1,0 +1,16 @@
+.city-form {
+  display: flex;
+  margin-bottom: 10px;
+
+  &__input {
+    flex-grow: 1;
+    padding: 5px 10px;
+
+    border: none;
+    border-radius: 6px;
+  }
+
+  &__btn {
+    margin-left: 10px;
+  }
+}
