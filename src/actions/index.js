@@ -1,23 +1,3 @@
-const weatherRequested = () => {
-    return {
-        type: 'FETCH_WEATHER_REQUESTED'
-    }
-};
-
-const weatherLoaded = (newWeather) => {
-    return {
-        type: 'FETCH_WEATHER_SUCCESS',
-        payload: newWeather
-    }
-};
-
-const weatherError = (error) => {
-    return {
-        type: 'FETCH_WEATHER_FAILURE',
-        payload: error
-    }
-};
-
 const citiesRequested = () => {
     return {
         type: 'FETCH_CITIES_REQUESTED'
@@ -38,23 +18,20 @@ const citiesError = (error) => {
     }
 };
 
-const fetchWeather = (weatherService) => () => (dispatch) => {
-    dispatch(weatherRequested());
-    console.log(weatherService.getWeather());
-    weatherService.getWeather()
-        .then((res) => dispatch(weatherLoaded(res)))
-        .catch((err) => dispatch(weatherError(err)));
+export const cityAdded = (city) => {
+    return {
+        type: 'CITY_ADDED',
+        payload: city,
+    }
 };
 
-const fetchCities = (weatherService) => () => (dispatch) => {
+const fetchCities = (weatherService) => (city) => (dispatch) => {
     dispatch(citiesRequested());
-    console.log(weatherService.getCities());
-    weatherService.getCities()
-        .then((cities) => dispatch(citiesLoaded(cities)))
+    weatherService.getCity(city)
+        .then((res) => dispatch(citiesLoaded(res)))
         .catch((err) => dispatch(citiesError(err)));
 };
 
 export {
-    fetchWeather,
     fetchCities
 };

@@ -2,41 +2,43 @@ import React, { Component } from 'react';
 import ErrorIndicator from '../error-indicator';
 import Spinner from "../spinner";
 import CitiesListItem from '../cities-list-item';
-import {fetchCities} from "../../actions";
-import {bindActionCreators} from "redux";
-import {withWeatherService} from "../hoc";
-import compose from '../utils'
+import { fetchCities } from "../../actions";
+import { bindActionCreators } from "redux";
+import { withWeatherService } from "../hoc";
+import { compose } from '../utils'
 import { connect } from 'react-redux';
 
 import './cities-list.scss';
 
-const CitiesList = ({ cities }) => {
-    return (
-        <ul className="cities-list">
-            {
-                cities.map((city) => {
+const CitiesList = ({ cities, onDelete }) => {
 
-                    return (
-                        <li key={city.id}>
-                            <CitiesListItem city={city}/>
-                        </li>
-                    )
-                })
-            }
-        </ul>
-    )
+    if (cities) {
+        return (
+
+            <ul className="cities-list">
+                {
+                    cities.map((city) => {
+
+                        return (
+                            <li key={city.id}>
+                                <CitiesListItem city={city} onDelete={onDelete}/>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
+        )
+    }
 };
 
 class CitiesListContainer extends Component {
 
     componentDidMount() {
-        console.log(this.props.fetchCities());
         this.props.fetchCities();
     }
 
     render() {
-        const { cities, loading, error } = this.props;
-        console.log({cities});
+        const { cities, loading, error, onDelete } = this.props;
 
         if (loading) {
             return <Spinner />
@@ -46,7 +48,8 @@ class CitiesListContainer extends Component {
             return <ErrorIndicator />
         }
 
-        return <CitiesList cities={cities} />
+        return <CitiesList cities={cities} onDelete={onDelete}/>
+
     }
 }
 
@@ -57,6 +60,9 @@ const mapStateToProps = ({ cities, loading, error }) => {
 const mapDispatchToProps = (dispatch, { weatherService }) => {
     return bindActionCreators({
         fetchCities: fetchCities(weatherService),
+        onDelete: (id) => {
+            console.log(`Delete ${id}`);
+        },
     }, dispatch);
 };
 

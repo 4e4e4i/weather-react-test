@@ -4,23 +4,8 @@ export default class WeatherService {
     _apiKey = '&APPID=54795f00a49de9d54e952c6a88995e7c';
     _apiMetric = '&units=metric';
 
-    cities = [
-        {
-            id: 1,
-            name: 'Краснодар'
-        },
-        {
-            id: 2,
-            name: 'Сочи'
-        },
-        {
-            id: 3,
-            name: 'Москва'
-        }
-    ];
-
     getResource = async (url) => {
-        const res = await fetch(`${this._apiBase}${url}${this._apiMetric}${this._apiKey}`);
+        const res = await fetch(`${this._apiBase}${url}${this._apiKey}${this._apiMetric}`);
 
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}` +
@@ -30,11 +15,20 @@ export default class WeatherService {
 
     };
 
-    getCities() {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(this.cities)
-            }, 700);
-        });
+    getCity = async (city) => {
+        const trCity = await this.getResource(`${city}`);
+        if ( city === '') {
+            return
+        }
+        return trCity.list;
+    };
+
+    _transformCity = (data) => {
+        return {
+            id: data.id,
+            name: data.name + ', ' + data.sys.country,
+            data: data
+        }
     }
+
 }

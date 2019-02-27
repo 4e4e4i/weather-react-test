@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 
 import './city-form.scss';
+import { compose } from '../utils';
+import { withWeatherService } from '../hoc';
+import { bindActionCreators } from "redux";
+import { fetchCities } from "../../actions";
+import { connect } from 'react-redux';
 
-export default class CityForm extends Component {
+class CityForm extends Component {
 
     state = {
         value: ''
@@ -16,7 +21,7 @@ export default class CityForm extends Component {
 
     handleClick = (event) => {
         event.preventDefault();
-        this.props.onClick(this.state.value);
+        this.props.onAddedToList(this.state.value);
         this.setState({
             value: ''
         });
@@ -28,15 +33,26 @@ export default class CityForm extends Component {
                 <input
                     className="city-form__input"
                     placeholder="Enter your city"
-                    value={this.state.value}
-                    onChange={this.handleChange}
+                    value={ this.state.value }
+                    onChange={ this.handleChange }
                     type="text"/>
                 <button
                     className="city-form__btn btn btn-primary"
-                    onClick={this.handleClick}>
+                    onClick={ this.handleClick }>
                     Add city
                 </button>
             </form>
         )
     }
 }
+
+const mapDispatchToProps = (dispatch, {weatherService}) => {
+    return bindActionCreators({
+            onAddedToList: fetchCities(weatherService)
+        }, dispatch);
+};
+
+export default compose(
+    withWeatherService(),
+    connect(null, mapDispatchToProps)
+)(CityForm);
