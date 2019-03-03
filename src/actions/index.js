@@ -21,9 +21,16 @@ const citiesError = (error) => {
 export const cityAdded = (city) => {
     return {
         type: 'CITY_ADDED',
-        payload: city,
+        payload: city
     }
 };
+
+export const cityNotFound = (error) => {
+    return {
+        type: 'CITY_NOT_FOUND',
+        payload: error
+    }
+}
 
 export const cityDeleted = (cityId) => {
     const lsPrefix = 'cities-';
@@ -38,7 +45,7 @@ export const cityDeleted = (cityId) => {
 const cityAdd = (weatherService) => (city) => (dispatch) => {
     weatherService.addCity(city)
         .then((res) => dispatch(cityAdded(res)))
-        .catch((err) => dispatch(citiesError(err)));
+        .catch((err) => dispatch(cityNotFound(err)));
 };
 
 const fetchCities = (weatherService) => () => (dispatch) => {

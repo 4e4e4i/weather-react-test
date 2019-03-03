@@ -1,7 +1,8 @@
 const initialState = {
     cities: [],
     loading: true,
-    error: null
+    error: null,
+    cityError: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,7 +35,8 @@ const reducer = (state = initialState, action) => {
                         ...state.cities,
                         city
                     ],
-                    loading: false
+                    loading: false,
+                    cityError: false
                 }
             }
 
@@ -50,6 +52,11 @@ const reducer = (state = initialState, action) => {
                     ...state.cities.slice(0, itemIndex),
                     ...state.cities.slice(itemIndex + 1)
                 ]
+            };
+        case 'CITY_NOT_FOUND':
+            return {
+                ...state,
+                cityError: true
             };
 
         default:

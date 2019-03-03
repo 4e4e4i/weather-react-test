@@ -19,16 +19,16 @@ const geoFindMe = () => {
     }
 
     function success(position) {
-        const latitude  = position.coords.latitude;
-        const longitude = position.coords.longitude;
+        const latitude = position.coords.latitude.toFixed(5);
+        const longitude = position.coords.longitude.toFixed(5);
 
-        console.log(latitude, longitude);
+        weatherService.getCityByCurrentPosition(longitude, latitude);
     }
 
     navigator.geolocation.getCurrentPosition(success);
 };
-
 geoFindMe();
+
 
 ReactDOM.render(
     <Provider store={store}>

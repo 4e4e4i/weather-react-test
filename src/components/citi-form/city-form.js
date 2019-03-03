@@ -10,7 +10,8 @@ import { connect } from 'react-redux';
 class CityForm extends Component {
 
     state = {
-        value: ''
+        value: '',
+        error: null,
     };
 
     handleChange = (event) => {
@@ -28,8 +29,15 @@ class CityForm extends Component {
     };
 
     render() {
+        const {cityError} = this.props;
+
         return (
-            <form className="city-form">
+            <form className={ cityError ?
+                "city-form city-form--error" :
+                "city-form" }>
+                {
+                    cityError ? <span>Can't found city</span> : ''
+                }
                 <input
                     className="city-form__input"
                     placeholder="Enter your city"
@@ -46,6 +54,11 @@ class CityForm extends Component {
     }
 }
 
+const mapStateToProps = ({ cityError }) => {
+    console.log(cityError);
+    return {cityError};
+};
+
 const mapDispatchToProps = (dispatch, {weatherService}) => {
     return bindActionCreators({
             onAddedToList: cityAdd(weatherService)
@@ -54,5 +67,5 @@ const mapDispatchToProps = (dispatch, {weatherService}) => {
 
 export default compose(
     withWeatherService(),
-    connect(null, mapDispatchToProps)
+    connect(mapStateToProps, mapDispatchToProps)
 )(CityForm);

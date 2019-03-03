@@ -3,11 +3,36 @@
   margin-bottom: 10px;
 
   &__input {
+    position: relative;
+
     flex-grow: 1;
     padding: 5px 10px;
 
     border: none;
     border-radius: 6px;
+  }
+
+  &--error {
+    position: relative;
+
+    .city-form__input {
+      border: 1px solid red;
+    }
+
+    span {
+      position: absolute;
+      content: 'Cant found city';
+      left: -130px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      width: 120px;
+      padding: 5px;
+
+      background-color: pink;
+      color: black;
+      border-radius: 10px;
+    }
   }
 
   &__btn {

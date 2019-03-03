@@ -1,6 +1,6 @@
 export default class WeatherService {
 
-    _apiBase = 'https://api.openweathermap.org/data/2.5/find?q=';
+    _apiBase = 'https://api.openweathermap.org/data/2.5/weather';
     _apiKey = '&APPID=54795f00a49de9d54e952c6a88995e7c';
     _apiMetric = '&units=metric';
     _lsPrefix = 'cities-';
@@ -23,26 +23,29 @@ export default class WeatherService {
     };
 
     getResource = async (url) => {
-        const res = await fetch(`${this._apiBase}${url}${this._apiKey}${this._apiMetric}`);
+        const res = await fetch(`${this._apiBase}?q=${url}${this._apiKey}${this._apiMetric}`);
 
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}` +
                 `, received ${res.status}`)
         }
         return await res.json();
-
     };
 
     addCity = async (city) => {
-        const data = await this.getResource(`${city}`);
-        const transformCity =  data.list[0];
-        if ( city === '') {
-            return;
-        }
-        const lskey = `${this._lsPrefix}` + transformCity.id;
+        if (city === '') return;
+        const data = await this.getResource(city);
+
+        const lskey = `${this._lsPrefix}` + data.id;
         if (!localStorage.getItem(lskey)) {
-            localStorage.setItem(lskey, JSON.stringify(transformCity));
+            localStorage.setItem(lskey, JSON.stringify(data));
         }
-        return transformCity;
+        return data;
     };
+
+    getCityByCurrentPosition = async (lon, lat) => {
+        const res = await fetch(`${this._apiBase}?lat=${lat}&lon=${lon}${this._apiKey}${this._apiMetric}`);
+        const json = res.json();
+        console.log(json);
+    }
 }
