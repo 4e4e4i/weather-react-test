@@ -4,7 +4,7 @@ import './city-form.scss';
 import { compose } from '../utils';
 import { withWeatherService } from '../hoc';
 import { bindActionCreators } from "redux";
-import { fetchCities } from "../../actions";
+import { cityAdd } from "../../actions";
 import { connect } from 'react-redux';
 
 class CityForm extends Component {
@@ -48,7 +48,7 @@ class CityForm extends Component {
 
 const mapDispatchToProps = (dispatch, {weatherService}) => {
     return bindActionCreators({
-            onAddedToList: fetchCities(weatherService)
+            onAddedToList: cityAdd(weatherService)
         }, dispatch);
 };
 

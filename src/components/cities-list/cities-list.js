@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ErrorIndicator from '../error-indicator';
 import Spinner from "../spinner";
 import CitiesListItem from '../cities-list-item';
-import { fetchCities } from "../../actions";
+import {cityDeleted, fetchCities} from "../../actions";
 import { bindActionCreators } from "redux";
 import { withWeatherService } from "../hoc";
 import { compose } from '../utils'
@@ -35,6 +35,7 @@ class CitiesListContainer extends Component {
 
     componentDidMount() {
         this.props.fetchCities();
+        console.log(this.props.fetchCities());
     }
 
     render() {
@@ -60,9 +61,7 @@ const mapStateToProps = ({ cities, loading, error }) => {
 const mapDispatchToProps = (dispatch, { weatherService }) => {
     return bindActionCreators({
         fetchCities: fetchCities(weatherService),
-        onDelete: (id) => {
-            console.log(`Delete ${id}`);
-        },
+        onDelete: cityDeleted
     }, dispatch);
 };
 

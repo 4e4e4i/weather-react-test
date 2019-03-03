@@ -25,13 +25,30 @@ export const cityAdded = (city) => {
     }
 };
 
-const fetchCities = (weatherService) => (city) => (dispatch) => {
+export const cityDeleted = (cityId) => {
+    const lsPrefix = 'cities-';
+    localStorage.removeItem(lsPrefix + cityId);
+
+    return {
+        type: 'CITY_DELETED',
+        payload: cityId
+    }
+};
+
+const cityAdd = (weatherService) => (city) => (dispatch) => {
+    weatherService.addCity(city)
+        .then((res) => dispatch(cityAdded(res)))
+        .catch((err) => dispatch(citiesError(err)));
+};
+
+const fetchCities = (weatherService) => () => (dispatch) => {
     dispatch(citiesRequested());
-    weatherService.getCity(city)
+    weatherService.fetchCities()
         .then((res) => dispatch(citiesLoaded(res)))
         .catch((err) => dispatch(citiesError(err)));
 };
 
 export {
-    fetchCities
+    fetchCities,
+    cityAdd
 };

@@ -23,6 +23,34 @@ const reducer = (state = initialState, action) => {
                 loading: false,
                 error: action.payload
             };
+        case 'CITY_ADDED':
+            const city = action.payload;
+            const cityId = city.id;
+            const cityIndex = state.cities.findIndex(({id}) => id === cityId);
+            if (cityIndex === -1) {
+                return {
+                    ...state,
+                    cities: [
+                        ...state.cities,
+                        city
+                    ],
+                    loading: false
+                }
+            }
+
+            return {
+                ...state
+            };
+        case 'CITY_DELETED':
+            const { cities } = state;
+            const itemIndex = cities.findIndex(({id}) => id === action.payload);
+            return {
+                ...state,
+                cities: [
+                    ...state.cities.slice(0, itemIndex),
+                    ...state.cities.slice(itemIndex + 1)
+                ]
+            };
 
         default:
             return state;
