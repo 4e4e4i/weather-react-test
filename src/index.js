@@ -12,24 +12,6 @@ import store from './store';
 
 const weatherService = new WeatherService();
 
-const geoFindMe = () => {
-
-    if (!navigator.geolocation){
-        return;
-    }
-
-    function success(position) {
-        const latitude = position.coords.latitude.toFixed(5);
-        const longitude = position.coords.longitude.toFixed(5);
-
-        weatherService.getCityByCurrentPosition(longitude, latitude);
-    }
-
-    navigator.geolocation.getCurrentPosition(success);
-};
-geoFindMe();
-
-
 ReactDOM.render(
     <Provider store={store}>
         <ErrorBoundry>

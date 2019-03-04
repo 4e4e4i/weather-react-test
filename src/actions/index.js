@@ -30,7 +30,7 @@ export const cityNotFound = (error) => {
         type: 'CITY_NOT_FOUND',
         payload: error
     }
-}
+};
 
 export const cityDeleted = (cityId) => {
     const lsPrefix = 'cities-';
@@ -50,6 +50,7 @@ const cityAdd = (weatherService) => (city) => (dispatch) => {
 
 const fetchCities = (weatherService) => () => (dispatch) => {
     dispatch(citiesRequested());
+    weatherService.getCurrent();
     weatherService.fetchCities()
         .then((res) => dispatch(citiesLoaded(res)))
         .catch((err) => dispatch(citiesError(err)));

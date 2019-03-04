@@ -35,7 +35,6 @@ class CitiesListContainer extends Component {
 
     componentDidMount() {
         this.props.fetchCities();
-        console.log(this.props.fetchCities());
     }
 
     render() {
@@ -61,7 +60,7 @@ const mapStateToProps = ({ cities, loading, error }) => {
 const mapDispatchToProps = (dispatch, { weatherService }) => {
     return bindActionCreators({
         fetchCities: fetchCities(weatherService),
-        onDelete: cityDeleted
+        onDelete: cityDeleted,
     }, dispatch);
 };
 

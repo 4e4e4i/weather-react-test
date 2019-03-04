@@ -55,7 +55,6 @@ class CityForm extends Component {
 }
 
 const mapStateToProps = ({ cityError }) => {
-    console.log(cityError);
     return {cityError};
 };
 

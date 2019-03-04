@@ -5,8 +5,31 @@ export default class WeatherService {
     _apiMetric = '&units=metric';
     _lsPrefix = 'cities-';
 
+    getCurrent = () => {
+        if (!navigator.geolocation) {
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(this.getCityByGeo);
+    };
+
+    getCityByGeo = async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const res = await fetch(`${this._apiBase}?lat=${lat}&lon=${lon}${this._apiKey}${this._apiMetric}`);
+
+        res.json().then((res) => {
+            const lskey = `${this._lsPrefix}` + res.id;
+            if (!localStorage.getItem(lskey)) {
+                localStorage.setItem(lskey, JSON.stringify(res));
+            }
+        });
+    };
+
     fetchCities = () => {
         let cities = [];
+
         if (localStorage.length) {
             for (let i = 0; i < localStorage.length; i++) {
                 if (localStorage.key(i).indexOf(`${this._lsPrefix}`) !== -1) {
@@ -18,7 +41,7 @@ export default class WeatherService {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(cities);
-            }, 700);
+            }, 900);
         })
     };
 
@@ -42,10 +65,4 @@ export default class WeatherService {
         }
         return data;
     };
-
-    getCityByCurrentPosition = async (lon, lat) => {
-        const res = await fetch(`${this._apiBase}?lat=${lat}&lon=${lon}${this._apiKey}${this._apiMetric}`);
-        const json = res.json();
-        console.log(json);
-    }
 }
