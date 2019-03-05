@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
     cities: [],
     loading: true,
     error: null,
